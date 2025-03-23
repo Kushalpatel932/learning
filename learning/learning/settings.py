@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'common',
+    'student',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +58,10 @@ ROOT_URLCONF = 'learning.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR,'themes/lms/templates'),
+                 
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,9 +122,41 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "themes/lms/static",  # Adjust path if needed
+]
+
+# STATIC_ROOT = BASE_DIR / "themes/staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-cs-522a5c3f-56fa-4868-9995-158e9abc9523.cs-asia-southeast1-ajrg.cloudshell.dev',
+    # Add other trusted origins here as needed
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-cs-738230612740-default.cs-asia-southeast1-seal.cloudshell.dev',
+    # Add other trusted origins if applicable
+]
+
+
+
+CACHES ={
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://8000-cs-738230612740-default.cs-asia-southeast1-seal.cloudshell.dev:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"

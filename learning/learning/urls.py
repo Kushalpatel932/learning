@@ -16,7 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from common.views import index
+from student.views import CreateUserData,GetUsersDate
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',index,name="index_page"),
+    path("api/v1/register",CreateUserData.as_view(),name="createuser"),
+    path("api/v1/users",GetUsersDate.as_view({'get':'list'}),name="uses_data")
+
 ]
+
+
+
